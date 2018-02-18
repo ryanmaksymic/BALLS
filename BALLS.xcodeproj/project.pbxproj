@@ -15,6 +15,7 @@
 		FE19DD2D20393DC9006948F6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FE19DD2B20393DC9006948F6 /* Main.storyboard */; };
 		FE19DD2F20393DC9006948F6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FE19DD2E20393DC9006948F6 /* Assets.xcassets */; };
 		FE19DD3220393DC9006948F6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FE19DD3020393DC9006948F6 /* LaunchScreen.storyboard */; };
+		FEA8076B203A4072000A9E82 /* Oswald-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FEA8076A203A4072000A9E82 /* Oswald-Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		FE19DD2E20393DC9006948F6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FE19DD3120393DC9006948F6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FE19DD3320393DC9006948F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FEA8076A203A4072000A9E82 /* Oswald-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Oswald-Regular.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +70,7 @@
 				FE19DD2B20393DC9006948F6 /* Main.storyboard */,
 				FE19DD2E20393DC9006948F6 /* Assets.xcassets */,
 				FE19DD3020393DC9006948F6 /* LaunchScreen.storyboard */,
+				FEA8076A203A4072000A9E82 /* Oswald-Regular.ttf */,
 				FE19DD3320393DC9006948F6 /* Info.plist */,
 			);
 			path = BALLS;
@@ -133,6 +136,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FE19DD2D20393DC9006948F6 /* Main.storyboard in Resources */,
+				FEA8076B203A4072000A9E82 /* Oswald-Regular.ttf in Resources */,
 				FE19DD2420393DC9006948F6 /* GameScene.sks in Resources */,
 				FE19DD2F20393DC9006948F6 /* Assets.xcassets in Resources */,
 				FE19DD3220393DC9006948F6 /* LaunchScreen.storyboard in Resources */,
