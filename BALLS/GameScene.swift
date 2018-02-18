@@ -21,6 +21,7 @@ class GameScene: SKScene
     self.lastUpdateTime = 0
   }
   
+  
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
   {
   }
