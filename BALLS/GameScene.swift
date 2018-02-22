@@ -8,12 +8,14 @@
 
 import SpriteKit
 import GameplayKit
+import CoreMotion
 
 class GameScene: SKScene
 {
   // MARK: - Properties
   
   var gameOn = false
+  var motionManager : CMMotionManager!
   var cameraTimer: Timer!
   var ball: SKSpriteNode!
   
@@ -26,6 +28,8 @@ class GameScene: SKScene
   
   override func sceneDidLoad()
   {
+    setUpMotionManager()
+    
     setUpCamera()
     
     setUpBall()
@@ -33,12 +37,24 @@ class GameScene: SKScene
     self.lastUpdateTime = 0
   }
   
+  func setUpMotionManager()
+  {
+    motionManager = CMMotionManager()
+    
+    motionManager.startAccelerometerUpdates()
+  }
+  
   func setUpCamera()
   {
+    let backgroundHeight = CGFloat(3840)
+    let backgroundCount = CGFloat(2)
+    
+    let cameraYLowerLimit = -backgroundHeight * (backgroundCount - 0.5)
+    
     camera?.position = CGPoint(x: 0.0, y: 0.0)
     
     let cameraXConstraint = SKConstraint.positionX(SKRange(lowerLimit: 0.0, upperLimit: 0.0))
-    let cameraYConstraint = SKConstraint.positionY(SKRange(lowerLimit: -1920, upperLimit: 0.0))
+    let cameraYConstraint = SKConstraint.positionY(SKRange(lowerLimit: cameraYLowerLimit, upperLimit: 0.0))
     
     camera?.constraints = [cameraXConstraint, cameraYConstraint]
   }
@@ -62,6 +78,8 @@ class GameScene: SKScene
   
   override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?)
   {
+    // TODO: Jump!
+    
     switch gameOn
     {
     case false:
@@ -86,6 +104,12 @@ class GameScene: SKScene
   
   override func update(_ currentTime: TimeInterval)
   {
+    if let accelerometerData = motionManager.accelerometerData
+    {
+      physicsWorld.gravity = CGVector(dx: accelerometerData.acceleration.x * 50, dy: -50)
+    }
+    
+    
     // Initialize _lastUpdateTime if it has not already been:
     if (self.lastUpdateTime == 0)
     {
