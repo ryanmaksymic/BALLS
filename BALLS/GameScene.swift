@@ -34,7 +34,7 @@ class GameScene: SKScene
     
     setUpBall()
     
-    self.physicsWorld.gravity = CGVector(dx: 0, dy: -9.8)
+    //self.physicsWorld.gravity = CGVector(dx: 0, dy: -30.0)
     
     self.lastUpdateTime = 0
   }
@@ -85,9 +85,9 @@ class GameScene: SKScene
     switch gameOn
     {
     case false:
-//      cameraTimer = Timer.scheduledTimer(withTimeInterval: 0.04, repeats: true) { (timer) in
-//        self.camera?.position.y -= 3
-//      }
+      //      cameraTimer = Timer.scheduledTimer(withTimeInterval: 0.04, repeats: true) { (timer) in
+      //        self.camera?.position.y -= 3
+      //      }
       ball.physicsBody?.isDynamic = true
       gameOn = true
     default:
@@ -106,7 +106,7 @@ class GameScene: SKScene
   
   override func update(_ currentTime: TimeInterval)
   {
-    //updateGravity()
+    updateGravity()
     
     // Initialize _lastUpdateTime if it has not already been:
     if (self.lastUpdateTime == 0)
