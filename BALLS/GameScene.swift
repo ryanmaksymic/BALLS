@@ -14,7 +14,8 @@ class GameScene: SKScene
 {
   // MARK: - Properties
   
-  var gameOn = false
+  var gameOn = true
+  
   var motionManager : CMMotionManager!
   var cameraTimer: Timer!
   var ball: SKSpriteNode!
@@ -29,9 +30,7 @@ class GameScene: SKScene
   override func sceneDidLoad()
   {
     setUpMotionManager()
-    
     setUpCamera()
-    
     setUpBall()
     
     //self.physicsWorld.gravity = CGVector(dx: 0, dy: -30.0)
@@ -42,29 +41,31 @@ class GameScene: SKScene
   func setUpMotionManager()
   {
     motionManager = CMMotionManager()
-    
     motionManager.startAccelerometerUpdates()
   }
   
   func setUpCamera()
   {
+    guard let camera = camera else
+    {
+      print("Error: Camera not found!")
+      return
+    }
+    
     let backgroundHeight = CGFloat(3840)
     let backgroundCount = CGFloat(2)
-    
     let cameraYLowerLimit = -backgroundHeight * (backgroundCount - 0.5)
-    
-    camera?.position = CGPoint(x: 0.0, y: 0.0)
-    
+    camera.position = CGPoint(x: 0.0, y: 0.0)
     let cameraXConstraint = SKConstraint.positionX(SKRange(lowerLimit: 0.0, upperLimit: 0.0))
     let cameraYConstraint = SKConstraint.positionY(SKRange(lowerLimit: cameraYLowerLimit, upperLimit: 0.0))
+    camera.constraints = [cameraXConstraint, cameraYConstraint]
     
-    camera?.constraints = [cameraXConstraint, cameraYConstraint]
+    //cameraTimer = Timer.scheduledTimer(withTimeInterval: 0.04, repeats: true) { (timer) in self.camera?.position.y -= 3 }
   }
   
   func setUpBall()
   {
     ball = self.childNode(withName: "ball") as! SKSpriteNode
-    ball.physicsBody?.isDynamic = false
   }
   
   
@@ -72,33 +73,16 @@ class GameScene: SKScene
   
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
   {
+    jump()
   }
   
-  override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?)
+  func jump()
   {
-  }
-  
-  override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?)
-  {
-    // TODO: Jump!
-    
-    switch gameOn
+    if let body = ball.physicsBody, body.velocity.dy == 0
     {
-    case false:
-      //      cameraTimer = Timer.scheduledTimer(withTimeInterval: 0.04, repeats: true) { (timer) in
-      //        self.camera?.position.y -= 3
-      //      }
-      ball.physicsBody?.isDynamic = true
-      gameOn = true
-    default:
-      //cameraTimer.invalidate()
-      ball.physicsBody?.isDynamic = false
-      gameOn = false
+      let jumpPower = CGFloat(800)
+      body.applyImpulse(CGVector(dx: 0, dy: jumpPower))
     }
-  }
-  
-  override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?)
-  {
   }
   
   
