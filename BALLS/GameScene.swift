@@ -19,6 +19,7 @@ class GameScene: SKScene
   var timerCount: Int!
   var timerLabel: SKLabelNode!
   var timerAction: SKAction!
+  var endgameMessage: SKLabelNode!
   
   var ball: SKSpriteNode!
   var ballYPosMin: CGFloat!
@@ -26,6 +27,9 @@ class GameScene: SKScene
   var cameraTimer: Timer!
   
   var gameOn = false
+  
+  let backgroundHeight = CGFloat(3840)
+  let backgroundCount = CGFloat(2)
   
   var entities = [GKEntity]()
   var graphs = [String : GKGraph]()
@@ -53,8 +57,6 @@ class GameScene: SKScene
       print("Error: Camera not found!")
       return
     }
-    let backgroundHeight = CGFloat(3840)
-    let backgroundCount = CGFloat(2)
     let cameraYLowerLimit = -backgroundHeight * (backgroundCount - 0.5)
     camera.position = CGPoint(x: 0.0, y: 0.0)
     let cameraXConstraint = SKConstraint.positionX(SKRange(lowerLimit: 0.0, upperLimit: 0.0))
@@ -65,15 +67,26 @@ class GameScene: SKScene
   
   func setUpTimer() {
     timerLabel = camera?.childNode(withName: "timerLabel") as! SKLabelNode
-    //timerLabel.text = "0:00"
     timerCount = 0
     timerAction = SKAction.repeatForever(SKAction.sequence([
       SKAction.wait(forDuration: 1.0),
       SKAction.run {
         self.timerCount = self.timerCount + 1
-        self.timerLabel.text = "0:0\(self.timerCount!)"
+        self.timerLabel.text = self.stringFromTime(time: self.timerCount)
       }
       ]))
+    endgameMessage = camera?.childNode(withName: "endgameMessage") as! SKLabelNode
+    endgameMessage.isHidden = true
+  }
+  
+  func stringFromTime(time: Int) -> String {
+    var result = ""
+    let ti = NSInteger(time)
+    let minutes = (ti / 60) % 60
+    let seconds = ti % 60
+    result.append("\(minutes)")
+    result.append(seconds < 10 ? ":0\(seconds)" : ":\(seconds)")
+    return result
   }
   
   func setUpBall() {
@@ -109,14 +122,19 @@ class GameScene: SKScene
   
   func endGame() {
     removeAllActions()
+    endgameMessage.isHidden = false
+    gameOn = false
   }
   
   
   // MARK: - Update
   
   override func update(_ currentTime: TimeInterval) {
-    updateGravity()
-    updateCamera()
+    if gameOn {
+      updateGravity()
+      updateCamera()
+      checkForWin()
+    }
     
     // Initialize _lastUpdateTime if it has not already been:
     if (self.lastUpdateTime == 0) {
@@ -143,6 +161,12 @@ class GameScene: SKScene
     }
     if camera!.position.y > ballYPosMin {
       camera!.position.y = ballYPosMin
+    }
+  }
+  
+  func checkForWin() {
+    if ball.position.y < -(backgroundHeight * (backgroundCount - 0.25)) - ball.size.height/2 {
+      endGame()
     }
   }
 }
