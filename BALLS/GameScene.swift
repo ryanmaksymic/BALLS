@@ -14,12 +14,18 @@ class GameScene: SKScene
 {
   // MARK: - Properties
   
-  var gameOn = false
-  
   var motionManager : CMMotionManager!
-  var cameraTimer: Timer!
+  
+  var timerCount: Int!
+  var timerLabel: SKLabelNode!
+  var timerAction: SKAction!
+  
   var ball: SKSpriteNode!
   var ballYPosMin: CGFloat!
+  
+  var cameraTimer: Timer!
+  
+  var gameOn = false
   
   var entities = [GKEntity]()
   var graphs = [String : GKGraph]()
@@ -31,6 +37,7 @@ class GameScene: SKScene
   override func sceneDidLoad() {
     setUpMotionManager()
     setUpCamera()
+    setUpTimer()
     setUpBall()
     //self.physicsWorld.gravity = CGVector(dx: 0, dy: -30.0)
     self.lastUpdateTime = 0
@@ -56,6 +63,19 @@ class GameScene: SKScene
     //cameraTimer = Timer.scheduledTimer(withTimeInterval: 0.04, repeats: true) { (timer) in self.camera?.position.y -= 3 }
   }
   
+  func setUpTimer() {
+    timerLabel = camera?.childNode(withName: "timerLabel") as! SKLabelNode
+    //timerLabel.text = "0:00"
+    timerCount = 0
+    timerAction = SKAction.repeatForever(SKAction.sequence([
+      SKAction.wait(forDuration: 1.0),
+      SKAction.run {
+        self.timerCount = self.timerCount + 1
+        self.timerLabel.text = "0:0\(self.timerCount!)"
+      }
+      ]))
+  }
+  
   func setUpBall() {
     ball = self.childNode(withName: "ball") as! SKSpriteNode
     ballYPosMin = ball.position.y
@@ -67,11 +87,16 @@ class GameScene: SKScene
   
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
     if gameOn == false {
-      ball.physicsBody!.isDynamic = true
-      gameOn = true
+      startGame()
     } else {
       jump()
     }
+  }
+  
+  func startGame() {
+    ball.physicsBody!.isDynamic = true
+    run(timerAction)
+    gameOn = true
   }
   
   func jump() {
@@ -80,6 +105,10 @@ class GameScene: SKScene
       let jumpPower = CGFloat(800)
       body.applyImpulse(CGVector(dx: 0, dy: jumpPower))
     }
+  }
+  
+  func endGame() {
+    removeAllActions()
   }
   
   
