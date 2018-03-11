@@ -14,11 +14,12 @@ class GameScene: SKScene
 {
   // MARK: - Properties
   
-  var gameOn = true
+  var gameOn = false
   
   var motionManager : CMMotionManager!
   var cameraTimer: Timer!
   var ball: SKSpriteNode!
+  var ballYPosMin: CGFloat!
   
   var entities = [GKEntity]()
   var graphs = [String : GKGraph]()
@@ -27,31 +28,24 @@ class GameScene: SKScene
   
   // MARK: - Setup
   
-  override func sceneDidLoad()
-  {
+  override func sceneDidLoad() {
     setUpMotionManager()
     setUpCamera()
     setUpBall()
-    
     //self.physicsWorld.gravity = CGVector(dx: 0, dy: -30.0)
-    
     self.lastUpdateTime = 0
   }
   
-  func setUpMotionManager()
-  {
+  func setUpMotionManager() {
     motionManager = CMMotionManager()
     motionManager.startAccelerometerUpdates()
   }
   
-  func setUpCamera()
-  {
-    guard let camera = camera else
-    {
+  func setUpCamera() {
+    guard let camera = camera else {
       print("Error: Camera not found!")
       return
     }
-    
     let backgroundHeight = CGFloat(3840)
     let backgroundCount = CGFloat(2)
     let cameraYLowerLimit = -backgroundHeight * (backgroundCount - 0.5)
@@ -59,25 +53,28 @@ class GameScene: SKScene
     let cameraXConstraint = SKConstraint.positionX(SKRange(lowerLimit: 0.0, upperLimit: 0.0))
     let cameraYConstraint = SKConstraint.positionY(SKRange(lowerLimit: cameraYLowerLimit, upperLimit: 0.0))
     camera.constraints = [cameraXConstraint, cameraYConstraint]
-    
     //cameraTimer = Timer.scheduledTimer(withTimeInterval: 0.04, repeats: true) { (timer) in self.camera?.position.y -= 3 }
   }
   
-  func setUpBall()
-  {
+  func setUpBall() {
     ball = self.childNode(withName: "ball") as! SKSpriteNode
+    ballYPosMin = ball.position.y
+    ball.physicsBody!.isDynamic = false
   }
   
   
   // MARK: - Touches
   
-  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
-  {
-    jump()
+  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    if gameOn == false {
+      ball.physicsBody!.isDynamic = true
+      gameOn = true
+    } else {
+      jump()
+    }
   }
   
-  func jump()
-  {
+  func jump() {
     if let body = ball.physicsBody, body.velocity.dy == 0
     {
       let jumpPower = CGFloat(800)
@@ -88,33 +85,35 @@ class GameScene: SKScene
   
   // MARK: - Update
   
-  override func update(_ currentTime: TimeInterval)
-  {
+  override func update(_ currentTime: TimeInterval) {
     updateGravity()
+    updateCamera()
     
     // Initialize _lastUpdateTime if it has not already been:
-    if (self.lastUpdateTime == 0)
-    {
+    if (self.lastUpdateTime == 0) {
       self.lastUpdateTime = currentTime
     }
-    
     // Calculate time since last update:
     let dt = currentTime - self.lastUpdateTime
-    
     // Update entities:
-    for entity in self.entities
-    {
+    for entity in self.entities {
       entity.update(deltaTime: dt)
     }
-    
     self.lastUpdateTime = currentTime
   }
   
-  func updateGravity()
-  {
-    if let accelerometerData = motionManager.accelerometerData
-    {
+  func updateGravity() {
+    if let accelerometerData = motionManager.accelerometerData {
       physicsWorld.gravity = CGVector(dx: accelerometerData.acceleration.x * 50, dy: -50)
+    }
+  }
+  
+  func updateCamera() {
+    if ball.position.y < ballYPosMin {
+      ballYPosMin = ball.position.y
+    }
+    if camera!.position.y > ballYPosMin {
+      camera!.position.y = ballYPosMin
     }
   }
 }
