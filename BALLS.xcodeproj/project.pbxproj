@@ -16,6 +16,10 @@
 		FE19DD2F20393DC9006948F6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FE19DD2E20393DC9006948F6 /* Assets.xcassets */; };
 		FE19DD3220393DC9006948F6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FE19DD3020393DC9006948F6 /* LaunchScreen.storyboard */; };
 		FEA8076B203A4072000A9E82 /* Oswald-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FEA8076A203A4072000A9E82 /* Oswald-Regular.ttf */; };
+		FECF3C942055D32A00599AB4 /* BALLS_test_1.gif in Resources */ = {isa = PBXBuildFile; fileRef = FECF3C902055D32A00599AB4 /* BALLS_test_1.gif */; };
+		FECF3C952055D32A00599AB4 /* BALLS_test_3.gif in Resources */ = {isa = PBXBuildFile; fileRef = FECF3C912055D32A00599AB4 /* BALLS_test_3.gif */; };
+		FECF3C962055D32A00599AB4 /* BALLS_test_2.gif in Resources */ = {isa = PBXBuildFile; fileRef = FECF3C922055D32A00599AB4 /* BALLS_test_2.gif */; };
+		FECF3C972055D32A00599AB4 /* BALLS_test_4.gif in Resources */ = {isa = PBXBuildFile; fileRef = FECF3C932055D32A00599AB4 /* BALLS_test_4.gif */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +34,10 @@
 		FE19DD3120393DC9006948F6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FE19DD3320393DC9006948F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FEA8076A203A4072000A9E82 /* Oswald-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Oswald-Regular.ttf"; sourceTree = "<group>"; };
+		FECF3C902055D32A00599AB4 /* BALLS_test_1.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = BALLS_test_1.gif; sourceTree = "<group>"; };
+		FECF3C912055D32A00599AB4 /* BALLS_test_3.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = BALLS_test_3.gif; sourceTree = "<group>"; };
+		FECF3C922055D32A00599AB4 /* BALLS_test_2.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = BALLS_test_2.gif; sourceTree = "<group>"; };
+		FECF3C932055D32A00599AB4 /* BALLS_test_4.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = BALLS_test_4.gif; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -48,6 +56,7 @@
 			children = (
 				FE19DD2020393DC9006948F6 /* BALLS */,
 				FE19DD1F20393DC9006948F6 /* Products */,
+				FECF3C8F2055D32A00599AB4 /* Documentation */,
 			);
 			sourceTree = "<group>";
 		};
@@ -74,6 +83,17 @@
 				FE19DD3320393DC9006948F6 /* Info.plist */,
 			);
 			path = BALLS;
+			sourceTree = "<group>";
+		};
+		FECF3C8F2055D32A00599AB4 /* Documentation */ = {
+			isa = PBXGroup;
+			children = (
+				FECF3C902055D32A00599AB4 /* BALLS_test_1.gif */,
+				FECF3C912055D32A00599AB4 /* BALLS_test_3.gif */,
+				FECF3C922055D32A00599AB4 /* BALLS_test_2.gif */,
+				FECF3C932055D32A00599AB4 /* BALLS_test_4.gif */,
+			);
+			path = Documentation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -135,9 +155,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FECF3C962055D32A00599AB4 /* BALLS_test_2.gif in Resources */,
 				FE19DD2D20393DC9006948F6 /* Main.storyboard in Resources */,
 				FEA8076B203A4072000A9E82 /* Oswald-Regular.ttf in Resources */,
 				FE19DD2420393DC9006948F6 /* GameScene.sks in Resources */,
+				FECF3C952055D32A00599AB4 /* BALLS_test_3.gif in Resources */,
+				FECF3C942055D32A00599AB4 /* BALLS_test_1.gif in Resources */,
+				FECF3C972055D32A00599AB4 /* BALLS_test_4.gif in Resources */,
 				FE19DD2F20393DC9006948F6 /* Assets.xcassets in Resources */,
 				FE19DD3220393DC9006948F6 /* LaunchScreen.storyboard in Resources */,
 				FE19DD2620393DC9006948F6 /* Actions.sks in Resources */,
