@@ -12,56 +12,57 @@ import GameplayKit
 
 class GameViewController: UIViewController
 {
-  override func viewDidLoad()
-  {
-    super.viewDidLoad()
-    
-    // Load 'GameScene.sks' as a GKScene:
-    if let scene = GKScene(fileNamed: "GameScene")
+    override func viewDidLoad()
     {
-      // Get the SKScene from the loaded GKScene:
-      if let sceneNode = scene.rootNode as! GameScene?
-      {
+        super.viewDidLoad()
         
-        // Copy gameplay related content over to the scene:
-        sceneNode.entities = scene.entities
-        sceneNode.graphs = scene.graphs
-        
-        // Set the scale mode to scale to fit the window:
-        sceneNode.scaleMode = .aspectFill
-        
-        // Present the scene:
-        if let view = self.view as! SKView?
+        // Load 'GameScene.sks' as a GKScene:
+        if let scene = GKScene(fileNamed: "GameScene")
+        //if let sceneNode = SKScene(fileNamed: "GameScene")
         {
-          view.presentScene(sceneNode)
-          
-          view.ignoresSiblingOrder = true
-          
-          //view.showsFPS = true
-          //view.showsNodeCount = true
-          //view.showsPhysics = true
+            // Get the SKScene from the loaded GKScene:
+            if let sceneNode = scene.rootNode as! GameScene?
+            {
+                
+                // Copy gameplay related content over to the scene:
+                sceneNode.entities = scene.entities
+                sceneNode.graphs = scene.graphs
+                
+                // Set the scale mode to scale to fit the window:
+                sceneNode.scaleMode = .aspectFill
+                
+                // Present the scene:
+                if let view = self.view as! SKView?
+                {
+                    view.presentScene(sceneNode)
+                    
+                    view.ignoresSiblingOrder = true
+                    
+                    //view.showsFPS = true
+                    //view.showsNodeCount = true
+                    //view.showsPhysics = true
+                }
+            }
         }
-      }
     }
-  }
-  
-  override var shouldAutorotate: Bool
-  {
-    return true
-  }
-  
-  override var supportedInterfaceOrientations: UIInterfaceOrientationMask
-  {
-    return .portrait
-  }
-  
-  override func didReceiveMemoryWarning()
-  {
-    super.didReceiveMemoryWarning()
-  }
-  
-  override var prefersStatusBarHidden: Bool
-  {
-    return true
-  }
+    
+    override var shouldAutorotate: Bool
+    {
+        return true
+    }
+    
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask
+    {
+        return .portrait
+    }
+    
+    override func didReceiveMemoryWarning()
+    {
+        super.didReceiveMemoryWarning()
+    }
+    
+    override var prefersStatusBarHidden: Bool
+    {
+        return true
+    }
 }
