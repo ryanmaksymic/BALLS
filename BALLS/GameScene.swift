@@ -10,6 +10,10 @@ import SpriteKit
 import GameplayKit
 import CoreMotion
 
+enum GameState {
+    case newGame, gameOn, gameOver, gameWon
+}
+
 class GameScene: SKScene
 {
     // MARK: - Properties
@@ -19,14 +23,17 @@ class GameScene: SKScene
     var timerCount: Int!
     var timerLabel: SKLabelNode!
     var timerAction: SKAction!
+    
+    var endgameAlert: SKSpriteNode!
     var endgameMessage: SKLabelNode!
+    var endgameAction: SKLabelNode!
     
     var ball: SKSpriteNode!
     var ballYPosMin: CGFloat!
     
     var cameraPan: SKAction!
     
-    var gameOn = false
+    var gameState = GameState.newGame
     
     let backgroundHeight = CGFloat(3840)
     let backgroundCount = CGFloat(2)
@@ -43,6 +50,7 @@ class GameScene: SKScene
         setUpMotionManager()
         setUpCamera()
         setUpTimer()
+        setUpEndgameAlert()
         setUpBall()
         //self.physicsWorld.gravity = CGVector(dx: 0, dy: -30.0)
         self.lastUpdateTime = 0
@@ -81,8 +89,13 @@ class GameScene: SKScene
                 self.timerLabel.text = self.stringFromTime(time: self.timerCount)
             }
             ]))
-        endgameMessage = camera?.childNode(withName: "endgameMessage") as! SKLabelNode
-        endgameMessage.isHidden = true
+    }
+    
+    func setUpEndgameAlert() {
+        endgameAlert = camera?.childNode(withName: "engameAlert") as! SKSpriteNode
+        endgameMessage = endgameAlert?.childNode(withName: "endgameMessage") as! SKLabelNode
+        endgameAction = endgameAlert?.childNode(withName: "endgameAction") as! SKLabelNode
+        endgameAlert.isHidden = true
     }
     
     func stringFromTime(time: Int) -> String {
@@ -105,9 +118,16 @@ class GameScene: SKScene
     // MARK: - Touches
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if gameOn == false {
+        switch gameState {
+        case .newGame:
             startGame()
-        } else {
+        case .gameOver:
+            if nodes(at: touches.first!.location(in: self)).first == endgameAction {
+                restartGame()
+            }
+        case .gameOn:
+            fallthrough
+        default:
             jump()
         }
     }
@@ -116,7 +136,7 @@ class GameScene: SKScene
         ball.physicsBody!.isDynamic = true
         run(timerAction)
         run(cameraPan)
-        gameOn = true
+        gameState = .gameOn
     }
     
     func jump() {
@@ -131,15 +151,24 @@ class GameScene: SKScene
         removeAllActions()
         ball.physicsBody!.isDynamic = false
         endgameMessage.text = win ? "YOU WIN!" : "GAME OVER!"
-        endgameMessage.isHidden = false
-        gameOn = false
+        endgameAction.text = win ? "CONTINUE" : "TRY AGAIN"
+        endgameAlert.isHidden = false
+        gameState = .gameOver
+    }
+    
+    func restartGame() {
+        if let scene = GKScene(fileNamed: "GameScene"), let sceneNode = scene.rootNode as? GameScene {
+            let transition = SKTransition.fade(withDuration: 0.5)
+            sceneNode.scaleMode = SKSceneScaleMode.fill
+            self.view!.presentScene(sceneNode, transition: transition)
+        }
     }
     
     
     // MARK: - Update
     
     override func update(_ currentTime: TimeInterval) {
-        if gameOn {
+        if gameState == .gameOn {
             updateGravity()
             updateCamera()
             checkForWin()
