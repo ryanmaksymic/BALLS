@@ -64,7 +64,7 @@ class GameScene: SKScene
         let cameraYConstraint = SKConstraint.positionY(SKRange(lowerLimit: cameraYLowerLimit, upperLimit: 0.0))
         camera.constraints = [cameraXConstraint, cameraYConstraint]
         cameraPan = SKAction.repeatForever(SKAction.sequence([
-            SKAction.wait(forDuration: 0.04),
+            SKAction.wait(forDuration: 0.01),
             SKAction.run {
                 self.camera?.position.y -= self.cameraPanRate
             }
@@ -127,8 +127,10 @@ class GameScene: SKScene
         }
     }
     
-    func endGame() {
+    func endGame(win: Bool) {
         removeAllActions()
+        ball.physicsBody!.isDynamic = false
+        endgameMessage.text = win ? "YOU WIN!" : "GAME OVER!"
         endgameMessage.isHidden = false
         gameOn = false
     }
@@ -141,6 +143,7 @@ class GameScene: SKScene
             updateGravity()
             updateCamera()
             checkForWin()
+            checkForLoss()
         }
         
         // Initialize _lastUpdateTime if it has not already been:
@@ -173,7 +176,13 @@ class GameScene: SKScene
     
     func checkForWin() {
         if ball.position.y < -(backgroundHeight * (backgroundCount - 0.25)) - ball.size.height/2 {
-            endGame()
+            endGame(win: true)
+        }
+    }
+    
+    func checkForLoss() {
+        if ballYPosMin > (camera!.position.y + self.frame.size.height/2 + ball.frame.size.height/2) && camera!.position.y < -100 {
+            endGame(win: false)
         }
     }
 }
